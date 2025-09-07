@@ -31,7 +31,7 @@ export default function Portfolio() {
           </div>
           <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center space-x-2">
             <Button variant="outline" size="sm" asChild>
-              <a href="/resume.pdf" download>
+              <a href="/Resume.pdf" target="_blank" rel="noopener noreferrer">
                 <Download className="mr-2 h-4 w-4" />
                 Resume
               </a>
