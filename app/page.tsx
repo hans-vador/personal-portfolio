@@ -73,7 +73,7 @@ export default function Portfolio() {
       </section>
 
       {/* About Section */}
-      <section id="about" className="container px-4 py-1 mx-auto">
+      <section id="about" className="container px-4 py-1 mx-auto scroll-mt-15">
         <div className="max-w-3xl mx-auto text-center space-y-6">
           <h2 className="text-3xl font-bold tracking-tighter">About Me</h2>
           <p className="text-muted-foreground text-lg text-pretty">
