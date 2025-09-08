@@ -225,8 +225,8 @@ export default function Portfolio() {
                     "Using HTML I was able to host a simple web app off the Arduino which could send requests to change the volume. While not visually pretty or functional it allowed to test the Wifi functions of the Arduino R4. However I quickly found the web app to be quite laggy and responsive enough.",
                   highlights: ["Remote Control", "HTML Webapp"],
                   media: [
-                    { type: "video", src: "/work/IMG_2227.MOV", title: "Test #2 Setup" },
-                    { type: "video", src: "/work/IMG_2223.MOV", title: "Test #2" },
+                    { type: "video", src: "https://drive.google.com/file/d/1YfzlnmGV2A6P6bFQhHVtcOAPBksovfN3/preview", title: "Test #2 Setup" },
+                    { type: "video", src: "https://drive.google.com/file/d/1iD0EXk3751JRVvyYkNfNIMk4qy5nm7gc/preview", title: "Test #2" },
                   ],
                 },
                 {
@@ -259,9 +259,9 @@ export default function Portfolio() {
                   media: [
                     { type: "image", src: "/work/IMG_2444.JPG", title: "Front View of Final Design" },
                     { type: "image", src: "/work/IMG_2442.JPG", title: "Bird's Eye View of Final Design" },
-                    { type: "video", src: "/work/IMG_2436.MOV", title: "Final Test Setup" },
-                    { type: "video", src: "/work/IMG_2437.MOV", title: "Final Test #1" },
-                    { type: "video", src: "/work/IMG_2439.MOV", title: "Final Test #2" },
+                    { type: "video", src: "https://drive.google.com/file/d/1r2iITi2uNqlSEdHvDmlK9auvoo-S3hyV/preview", title: "Final Test Setup" },
+                    { type: "video", src: "https://drive.google.com/file/d/1JAr6bxXjE85b0ROWRSGQ2jaG0dMnf2mZ/preview", title: "Final Test #1" },
+                    { type: "video", src: "https://drive.google.com/file/d/1I1lSmxp165gkqYzLzng_kAViax1hredg/preview", title: "Final Test #2" },
                   ],
                 },
               ].map((version, i) => (
@@ -287,16 +287,28 @@ export default function Portfolio() {
                     {version.media.map((m, idx) => (
                       <Card key={idx} className="group overflow-hidden hover:shadow-lg transition-shadow">
                         <div className="relative aspect-[4/5] bg-muted flex items-center justify-center">
-                          {m.type === "image" ? (
-                            <Image
-                              src={m.src || "/placeholder.svg"}
-                              alt={m.title}
-                              fill
-                              className="object-contain p-2"
-                            />
-                          ) : (
-                            <video src={m.src} className="w-full h-full object-contain p-2" controls playsInline />
-                          )}
+                          {m.type === "image"
+                            ? (
+                              <Image
+                                src={m.src || "/placeholder.svg"}
+                                alt={m.title}
+                                fill
+                                className="object-contain p-2"
+                              />
+                            )
+                            : (
+                              (typeof m.src === 'string' && m.src.includes("drive.google.com")) ? (
+                                <iframe
+                                  src={m.src}
+                                  className="w-full h-full"
+                                  allow="autoplay"
+                                  allowFullScreen
+                                  title={m.title}
+                                />
+                              ) : (
+                                <video src={m.src} className="w-full h-full object-contain p-2" controls playsInline />
+                              )
+                            )}
                           <div className="absolute top-2 right-2">
                             <div
                               className="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold border"
