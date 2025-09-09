@@ -186,7 +186,7 @@ export default function VolumeControlProject() {
                   </a>
                 </Button>
                 <Button variant="outline" asChild>
-                  <a href="https://github.com/hans-vador" target="_blank" rel="noopener noreferrer">
+                  <a href="https://github.com/hans-vador/volume-control" target="_blank" rel="noopener noreferrer">
                     <Github className="mr-2 h-4 w-4" />
                     View Code
                   </a>
@@ -254,9 +254,8 @@ export default function VolumeControlProject() {
                       <button
                         key={idx}
                         onClick={() => setCurrentVersion(idx)}
-                        className={`h-3 w-12 rounded-full transition-all duration-300 hover:scale-105 ${
-                          idx === currentVersion ? "bg-primary shadow-lg" : "bg-muted hover:bg-muted-foreground/20"
-                        }`}
+                        className={`h-3 w-12 rounded-full transition-all duration-300 hover:scale-105 ${idx === currentVersion ? "bg-primary shadow-lg" : "bg-muted hover:bg-muted-foreground/20"
+                          }`}
                       />
                     ))}
                   </div>
