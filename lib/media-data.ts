@@ -28,28 +28,28 @@ export interface PhotoAlbum {
 // Video Projects Data
 export const videoProjects: VideoProject[] = [
   {
-    id: "showreel-2024",
-    title: "2024 Showreel",
-    description: "A comprehensive showcase of my best video work from 2024, featuring cinematic storytelling and technical expertise.",
+    id: "showreel-2025",
+    title: "Buckeye Vertical 2025 Video",
+    description: "A short video I put together from my time on the team highlighting our building and competition. The experience was incredible and was one of my most notable trips.",
     videoUrl: "https://drive.google.com/file/d/1Ly_wOraeMngsvn84HUS9JUvyoEyUPdTg/preview",
     featured: true,
     category: "showreel"
   },
   {
-    id: "corporate-documentary",
-    title: "Corporate Documentary",
-    description: "Behind-the-scenes documentary showcasing company culture and team collaboration.",
+    id: "showreel-2025",
+    title: "BHT Camp 2025 Video",
+    description: "A longer form video documenting the 4 day overnight summer camp hosted at my local temple. Truly one of the most fun times in my life.",
     videoUrl: "https://drive.google.com/file/d/YOUR_VIDEO_ID_2/preview", // Replace with your actual video URL
     featured: true,
-    category: "documentary"
+    category: "showreel"
   },
   {
-    id: "product-promo",
-    title: "Product Launch Promo",
-    description: "Dynamic promotional video for a tech product launch with motion graphics and animations.",
-    videoUrl: "https://drive.google.com/file/d/YOUR_VIDEO_ID_3/preview", // Replace with your actual video URL
+    id: "showreel-2024",
+    title: "BHT Camp 2024 Video",
+    description: "My first time tackling a longer form video project. This was a fun experience and I learned a lot about storytelling and pacing.",
+    videoUrl: "https://drive.google.com/file/d/1K1gN6O053-Yjr6TntIZ6qn8sBroV5lWG/preview", // Replace with your actual video URL
     featured: true,
-    category: "promotional"
+    category: "showreel"
   }
 ]
 
