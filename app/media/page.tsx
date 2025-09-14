@@ -112,7 +112,6 @@ export default function MediaPage() {
                     title={video.title}
                     description={video.description}
                     videoUrl={video.videoUrl}
-                    date={video.date}
                     duration={video.duration}
                     tags={video.tags}
                     featured={video.featured}
