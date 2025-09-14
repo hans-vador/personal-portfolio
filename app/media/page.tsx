@@ -2,10 +2,38 @@
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { Download, Play } from "lucide-react"
+import { Badge } from "@/components/ui/badge"
+import { Download, Filter, Grid, List, Play, Image as ImageIcon } from "lucide-react"
 import Link from "next/link"
+import { VideoCard } from "@/components/VideoCard"
+import React from "react"
+import { PhotoAlbumCard } from "@/components/PhotoAlbumCard"
+import {
+  videoProjects,
+  photoAlbums,
+  getAllVideoCategories,
+  getAllAlbumCategories,
+  type VideoProject,
+  type PhotoAlbum
+} from "@/lib/media-data"
+import { useState } from "react"
 
 export default function MediaPage() {
+  const [selectedVideoCategory, setSelectedVideoCategory] = useState<string>("all")
+  const [selectedAlbumCategory, setSelectedAlbumCategory] = useState<string>("all")
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid")
+
+  const videoCategories = ["all", ...getAllVideoCategories()]
+  const albumCategories = ["all", ...getAllAlbumCategories()]
+
+  const filteredVideos = selectedVideoCategory === "all"
+    ? videoProjects
+    : videoProjects.filter(video => video.category === selectedVideoCategory)
+
+  const filteredAlbums = selectedAlbumCategory === "all"
+    ? photoAlbums
+    : photoAlbums.filter(album => album.category === selectedAlbumCategory)
+
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
@@ -37,55 +65,212 @@ export default function MediaPage() {
 
       {/* Media Section */}
       <section className="container px-4 py-16 mx-auto">
-        <div className="space-y-8">
+        <div className="space-y-12">
           <div className="text-center space-y-4">
             <h1 className="text-4xl font-bold tracking-tighter">Media Work</h1>
             <p className="text-muted-foreground max-w-2xl mx-auto text-pretty">
-              Creative projects and visual content showcasing my media production skills.
+              Creative projects and visual content showcasing my media production skills across video and photography.
             </p>
           </div>
 
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            <Card className="group overflow-hidden hover:shadow-lg transition-all duration-300">
-              <div className="relative aspect-video bg-muted/30">
-                <iframe
-                  src="https://drive.google.com/file/d/1Ly_wOraeMngsvn84HUS9JUvyoEyUPdTg/preview"
-                  className="w-full h-full p-2"
-                  allow="autoplay"
-                  title="Featured Video Project"
-                />
+          {/* Video Projects Section */}
+          <div className="space-y-6">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <Play className="h-6 w-6 text-primary" />
+                <h2 className="text-2xl font-semibold">Video Projects</h2>
+                <Badge variant="outline" className="text-xs">
+                  {filteredVideos.length} projects
+                </Badge>
               </div>
-              <CardContent className="p-4">
-                <h4 className="font-semibold mb-2">Featured Video Project</h4>
-                <p className="text-sm text-muted-foreground">
-                  Professional videography showcasing dynamic storytelling and technical expertise
-                </p>
-              </CardContent>
-            </Card>
 
-            {[
-              {
-                title: "Brand Identity Campaign",
-                desc: "Complete visual identity development for emerging tech startup",
-              },
-              { title: "Event Documentation", desc: "Comprehensive coverage of corporate events and conferences" },
-              { title: "Product Showcase", desc: "High-impact product photography with creative lighting techniques" },
-              { title: "Social Media Content", desc: "Engaging short-form content optimized for digital platforms" },
-              { title: "Promotional Materials", desc: "Marketing collateral design for various client campaigns" },
-            ].map((project, i) => (
-              <Card key={i} className="group overflow-hidden hover:shadow-lg transition-all duration-300">
-                <div className="relative aspect-video bg-muted/30 flex items-center justify-center">
-                  <div className="text-center space-y-2">
-                    <Play className="h-8 w-8 text-primary/60 mx-auto opacity-0 group-hover:opacity-100 transition-opacity" />
-                    <p className="text-xs text-muted-foreground">Coming Soon</p>
-                  </div>
+              <div className="flex items-center gap-4">
+                {/* Video Category Filter */}
+                <div className="flex items-center gap-2">
+                  <Filter className="h-4 w-4 text-muted-foreground" />
+                  <select
+                    value={selectedVideoCategory}
+                    onChange={(e) => setSelectedVideoCategory(e.target.value)}
+                    className="px-3 py-1 border border-input bg-background rounded-md text-sm"
+                  >
+                    {videoCategories.map((category) => (
+                      <option key={category} value={category}>
+                        {category === "all" ? "All Videos" : category.charAt(0).toUpperCase() + category.slice(1)}
+                      </option>
+                    ))}
+                  </select>
                 </div>
-                <CardContent className="p-4">
-                  <h4 className="font-semibold mb-2">{project.title}</h4>
-                  <p className="text-sm text-muted-foreground">{project.desc}</p>
+              </div>
+            </div>
+
+            {/* Videos Grid */}
+            {filteredVideos.length > 0 ? (
+              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                {filteredVideos.map((video) => (
+                  <VideoCard
+                    key={video.id}
+                    title={video.title}
+                    description={video.description}
+                    videoUrl={video.videoUrl}
+                    date={video.date}
+                    duration={video.duration}
+                    tags={video.tags}
+                    featured={video.featured}
+                  />
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-12">
+                <div className="space-y-2">
+                  <Play className="h-12 w-12 text-muted-foreground mx-auto" />
+                  <h3 className="text-lg font-medium">No videos found</h3>
+                  <p className="text-muted-foreground">
+                    {selectedVideoCategory === "all"
+                      ? "No video projects are configured yet."
+                      : `No videos found in the ${selectedVideoCategory} category.`}
+                  </p>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Photo Albums Section */}
+          <div className="space-y-6">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <ImageIcon className="h-6 w-6 text-primary" />
+                <h2 className="text-2xl font-semibold">Photo Albums</h2>
+                <Badge variant="outline" className="text-xs">
+                  {filteredAlbums.length} albums
+                </Badge>
+              </div>
+
+              <div className="flex items-center gap-4">
+                {/* Album Category Filter */}
+                <div className="flex items-center gap-2">
+                  <Filter className="h-4 w-4 text-muted-foreground" />
+                  <select
+                    value={selectedAlbumCategory}
+                    onChange={(e) => setSelectedAlbumCategory(e.target.value)}
+                    className="px-3 py-1 border border-input bg-background rounded-md text-sm"
+                  >
+                    {albumCategories.map((category) => (
+                      <option key={category} value={category}>
+                        {category === "all" ? "All Albums" : category.charAt(0).toUpperCase() + category.slice(1)}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* View Mode Toggle */}
+                <div className="flex items-center border border-input rounded-md">
+                  <Button
+                    variant={viewMode === "grid" ? "default" : "ghost"}
+                    size="sm"
+                    onClick={() => setViewMode("grid")}
+                    className="rounded-r-none"
+                  >
+                    <Grid className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    variant={viewMode === "list" ? "default" : "ghost"}
+                    size="sm"
+                    onClick={() => setViewMode("list")}
+                    className="rounded-l-none"
+                  >
+                    <List className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+            </div>
+
+            {/* Albums Grid */}
+            {filteredAlbums.length > 0 ? (
+              <div className={`grid gap-6 ${viewMode === "grid"
+                ? "grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-3"
+                : "grid-cols-1 w-full"
+                } items-start`}
+                style={{ gap: '1.5rem' }}
+              >
+                {filteredAlbums.map((album) => (
+                  <PhotoAlbumCard
+                    key={album.id}
+                    id={album.id}
+                    title={album.title}
+                    description={album.description}
+                    albumUrl={album.albumUrl}
+                    localPhotos={album.localPhotos}
+                    coverImageUrl={album.coverImageUrl}
+                    date={album.date}
+                    imageCount={album.imageCount}
+                    featured={album.featured}
+                    category={album.category}
+                    className="w-full"
+                  />
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-12">
+                <div className="space-y-2">
+                  <ImageIcon className="h-12 w-12 text-muted-foreground mx-auto" />
+                  <h3 className="text-lg font-medium">No albums found</h3>
+                  <p className="text-muted-foreground">
+                    {selectedAlbumCategory === "all"
+                      ? "No photo albums are configured yet."
+                      : `No albums found in the ${selectedAlbumCategory} category.`}
+                  </p>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Setup Instructions */}
+          {(videoProjects.length === 0 || videoProjects.every(video => video.videoUrl.includes('YOUR_VIDEO_ID')) ||
+            photoAlbums.length === 0 || photoAlbums.every(album => album.albumUrl.includes('YOUR_ALBUM_URL'))) && (
+              <Card className="bg-muted/50 border-dashed">
+                <CardContent className="p-6">
+                  <div className="text-center space-y-4">
+                    <div className="space-y-2">
+                      <h3 className="text-lg font-medium">Setup Required</h3>
+                      <p className="text-muted-foreground">
+                        To display your media content, you need to configure your videos and photo albums.
+                      </p>
+                    </div>
+                    <div className="text-left space-y-3 text-sm bg-background p-4 rounded-lg">
+                      <div>
+                        <p className="font-medium">For Video Projects:</p>
+                        <ol className="list-decimal list-inside space-y-1 text-muted-foreground mt-1">
+                          <li>Upload your videos to Google Drive</li>
+                          <li>Get the shareable link and replace '/view' with '/preview'</li>
+                          <li>Update video URLs in <code className="bg-muted px-1 rounded">/lib/media-data.ts</code></li>
+                        </ol>
+                      </div>
+                      <div>
+                        <p className="font-medium">For Photo Albums:</p>
+                        <ol className="list-decimal list-inside space-y-1 text-muted-foreground mt-1">
+                          <li>Add up to 20 photos to the <code className="bg-muted px-1 rounded">/public/work/</code> directory</li>
+                          <li>Update the <code className="bg-muted px-1 rounded">localPhotos</code> array in <code className="bg-muted px-1 rounded">/lib/media-data.ts</code></li>
+                          <li>Add your Google Photos album URL for the "View All Photos" link</li>
+                          <li>Photos will display in a carousel with thumbnail navigation (first 20 shown)</li>
+                        </ol>
+                      </div>
+                    </div>
+                  </div>
                 </CardContent>
               </Card>
-            ))}
+            )}
+
+          {/* Contact CTA */}
+          <div className="max-w-4xl mx-auto mt-12 text-center">
+            <h3 className="text-2xl font-semibold">Interested in booking a session or seeing more?</h3>
+            <p className="text-muted-foreground mt-2">Contact me for rates, availability, or a detailed portfolio walkthrough.</p>
+            <div className="mt-4">
+              <Button asChild>
+                <a href="mailto:hvador@umich.edu">
+                  Contact Me
+                </a>
+              </Button>
+            </div>
           </div>
         </div>
       </section>
